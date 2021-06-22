@@ -46,8 +46,10 @@ class LoginFragment : Fragment() {
                             SharedPrefsCache(it1).set("token", result.token, "string")
                             it1.startActivity(Intent(it1, MainActivity::class.java))
                         }}
-                    } else
+                    } else {
+                        context?.let { it1 -> it1.startActivity(Intent(it1, OrdersActivity::class.java)) }
                         Snackbar.make(view, message as CharSequence, Snackbar.LENGTH_LONG).setBackgroundTint(resources.getColor(R.color.colorPrimary)).show()
+                    }
                 }
             }
         }

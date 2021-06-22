@@ -15,7 +15,7 @@ import java.util.*
 
 class AdapterOrder(
     private var listOrder: List<Order>,
-    private val refListener: ListAdapterListener
+    private val refListener: ListAdapterListener?
 ) : RecyclerView.Adapter<AdapterOrder.OrderViewHolder>() {
     private lateinit var mContext: Context
 

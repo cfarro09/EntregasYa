@@ -46,6 +46,7 @@ class RegisterFragment : Fragment() {
             val password = register_password.text.toString()
 
             if (firstName != "" && lastName != "" && email != "" && username != "" && password != "") {
+                dialogLoading.show()
                 Repository().register(firstName, lastName, email, username, password) { isSuccess, result, message ->
                     dialogLoading.hide()
                     if (isSuccess) {

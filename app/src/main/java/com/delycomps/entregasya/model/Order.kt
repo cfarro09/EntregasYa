@@ -88,5 +88,5 @@ data class Order(
     var status: String,
     @SerializedName("date_created")
     @Expose
-    var dateCreated: Date
+    var dateCreated: String
 )
