@@ -41,13 +41,11 @@ class LoginFragment : Fragment() {
                 Repository().login(username, password) { isSuccess, result, message ->
                     dialogLoading.hide()
                     if (isSuccess) {
-                        context?.let { it1 -> {
-                            SharedPrefsCache(it1).set("fullname", result!!.fullName, "string")
-                            SharedPrefsCache(it1).set("token", result.token, "string")
-                            it1.startActivity(Intent(it1, MainActivity::class.java))
-                        }}
+                        SharedPrefsCache(requireContext()).set("firstname", result!!.firstName + " " + result.lastName, "string")
+                        SharedPrefsCache(requireContext()).set("token", result.token, "string")
+                        SharedPrefsCache(requireContext()).set("type", result.type, "string")
+                        requireContext().startActivity(Intent(requireContext(), HomeActivity::class.java))
                     } else {
-                        context?.let { it1 -> it1.startActivity(Intent(it1, OrdersActivity::class.java)) }
                         Snackbar.make(view, message as CharSequence, Snackbar.LENGTH_LONG).setBackgroundTint(resources.getColor(R.color.colorPrimary)).show()
                     }
                 }

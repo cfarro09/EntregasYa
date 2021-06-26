@@ -12,13 +12,19 @@ data class Response(
 data class ResponseLogin(
     var success: Boolean,
     var msg: String?,
-    var result: User?
+    var data: User?,
+    var error: ResError?
 )
 
 data class ResponseOrders(
     var success: Boolean,
     var msg: String?,
     var result: List<Order>
+)
+
+data class ResError(
+    var mensaje: String?,
+    var code: Int?
 )
 
 data class BodyGet(

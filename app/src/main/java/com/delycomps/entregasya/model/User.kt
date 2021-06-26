@@ -10,19 +10,16 @@ data class User(
     @SerializedName("fullname")
     @Expose
     var fullName: String,
-    @SerializedName("role")
+    @SerializedName("type")
     @Expose
-    var role: String,
-
-
-
+    var type: String,
     @SerializedName("contactid")
     @Expose
     var contactId: Int,
-    @SerializedName("firstname")
+    @SerializedName("first_name")
     @Expose
     var firstName: String,
-    @SerializedName("lastname")
+    @SerializedName("last_name")
     @Expose
     var lastName: String,
     @SerializedName("document")

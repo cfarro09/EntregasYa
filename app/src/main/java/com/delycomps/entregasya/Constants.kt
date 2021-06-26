@@ -1,6 +1,6 @@
 package com.delycomps.entregasya
 
 object Constants {
-    const val HOST: String= "http://spazioideal.com/api2/" //-- PROD
+    const val HOST: String= "http://158.69.156.167:3999/api/" //-- PROD
 }
 

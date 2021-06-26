@@ -43,14 +43,14 @@
             android:layout_width="match_parent"
             android:textColorHint="#FFF"
             android:background="@drawable/input_style"
-            android:hint="@string/lastname"
+            android:hint="@string/last_name"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:lines="1"
             android:singleLine="true"
             android:textSize="15sp"
             android:layout_marginBottom="15sp"
-            android:autofillHints="@string/lastname" />
+            android:autofillHints="@string/last_name" />
         <EditText
             android:id="@+id/register_email"
             android:padding="10dp"

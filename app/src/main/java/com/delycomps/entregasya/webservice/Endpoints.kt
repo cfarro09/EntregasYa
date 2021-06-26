@@ -9,10 +9,10 @@ import retrofit2.http.*
 
 interface Endpoints {
 
-    @POST("login")
+    @POST("auth/login")
     fun login(@Body body: RequestBody): Call<ResponseLogin>
 
-    @POST("register")
+    @POST("auth/register")
     fun register(@Body body: RequestBody): Call<ResponseLogin>
 
     @POST("main")

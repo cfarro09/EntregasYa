@@ -53,7 +53,7 @@ class RegisterFragment : Fragment() {
                         context?.let { it1 -> {
                             SharedPrefsCache(it1).set("fullname", result!!.fullName, "string")
                             SharedPrefsCache(it1).set("token", result.token, "string")
-                            it1.startActivity(Intent(it1, MainActivity::class.java))
+                            it1.startActivity(Intent(it1, HomeActivity::class.java))
                         }}
                     } else
                         Snackbar.make(view, message as CharSequence, Snackbar.LENGTH_LONG).setBackgroundTint(resources.getColor(R.color.colorPrimary)).show()
