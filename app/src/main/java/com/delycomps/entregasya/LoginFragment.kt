@@ -42,7 +42,7 @@ class LoginFragment : Fragment() {
                     dialogLoading.hide()
                     if (isSuccess) {
                         SharedPrefsCache(requireContext()).set("firstname", result!!.firstName + " " + result.lastName, "string")
-                        SharedPrefsCache(requireContext()).set("token", result.token, "string")
+                        SharedPrefsCache(requireContext()).set("token", "Bearer ${result.token}", "string")
                         SharedPrefsCache(requireContext()).set("type", result.type, "string")
                         requireContext().startActivity(Intent(requireContext(), HomeActivity::class.java))
                     } else {

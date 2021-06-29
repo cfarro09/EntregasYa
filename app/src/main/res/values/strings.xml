@@ -50,4 +50,14 @@
     <string name="department">Departamento</string>
     <string name="province">Provincia</string>
     <string name="district">Distrito</string>
+    <string name="ubigeo">Ubigeo</string>
+    <string name="example_ubigeo">departamento/provincia/distrito</string>
+    <string name="accept">ACEPTAR</string>
+    <string name="info_producto">Datos del producto</string>
+    <string name="example_product">TV 41\' Samsung</string>
+    <string name="product_name">Nombre producto</string>
+    <string name="quantity">Cantidad</string>
+    <string name="packing">Empaque</string>
+    <string name="contact_name">Nombre del contacto</string>
+    <string name="contact_phone">Teléfono del contacto</string>
 </resources>

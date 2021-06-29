@@ -8,7 +8,7 @@ class SharedPrefsCache(context: Context) {
     private val pref: SharedPreferences = context.getSharedPreferences("MyPref", 0)
 
     fun getToken(): String{
-        return pref.getString("token", "string")!!
+        return pref.getString("token", "")!!
     }
 
     fun get(key: String, type: String): Any? {

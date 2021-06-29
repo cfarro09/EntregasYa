@@ -21,11 +21,6 @@ class OrdersViewModel : ViewModel() {
     private val _loading: MutableLiveData<Boolean> = MutableLiveData()
     val loading: LiveData<Boolean> = _loading
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
-    }
-    val text: LiveData<String> = _text
-
     fun getListOrder(token: String) {
         _loading.value = true
         Repository().getOrder(token) { isSuccess, result, message ->
@@ -41,9 +36,6 @@ class OrdersViewModel : ViewModel() {
                     "943856850", "03", "NINGUNO", "01/01/1994")
                 _listOrders.value = listOf(oo, oo, oo)
                 _textError.value = message
-//                rv.adapter = AdapterOrder(listOf(oo, oo, oo), null)
-//                Snackbar.make(rv, message as CharSequence, Snackbar.LENGTH_LONG)
-//                    .setBackgroundTint(resources.getColor(R.color.colorPrimary)).show()
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.delycomps.entregasya.webservice
 
 import com.delycomps.entregasya.model.Order
+import com.delycomps.entregasya.model.ResponseLocation
 import com.delycomps.entregasya.model.ResponseLogin
 import com.delycomps.entregasya.model.ResponseOrders
 import okhttp3.RequestBody
@@ -17,5 +18,8 @@ interface Endpoints {
 
     @POST("main")
     fun getOrders(@Body body: RequestBody, @Header("Authorization") authHeader: String): Call<ResponseOrders>
+
+    @POST("main")
+    fun getUbigeo(@Body body: RequestBody, @Header("Authorization") authHeader: String): Call<ResponseLocation>
 
 }

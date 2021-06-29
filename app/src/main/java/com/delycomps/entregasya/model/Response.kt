@@ -27,6 +27,17 @@ data class ResError(
     var code: Int?
 )
 
+data class ResponseLocation(
+    var success: Boolean,
+    var data: List<ResLocation>?,
+    var error: ResError?
+)
+
+data class ResLocation(
+    var value: String?,
+    var ubigeo: String?
+)
+
 data class BodyGet(
     var method: String,
     var data: JSONObject

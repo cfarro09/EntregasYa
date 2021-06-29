@@ -1,9 +1,6 @@
 package com.delycomps.entregasya.webservice
 
-import com.delycomps.entregasya.model.Order
-import com.delycomps.entregasya.model.ResponseLogin
-import com.delycomps.entregasya.model.ResponseOrders
-import com.delycomps.entregasya.model.User
+import com.delycomps.entregasya.model.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -36,14 +33,8 @@ class Repository {
                     response: Response<ResponseLogin>?
                 ) {
                     if (response!!.isSuccessful) {
-                        if (response.body()!!.success) {
-                            val user: User = response.body()!!.data!!
-                            onResult(true, user, null)
-                        } else {
-                            val msg: String =
-                                if (response.body()!!.error != null) response.body()!!.error?.mensaje!! else "Hubo un error vuelva a intentarlo"
-                            onResult(false, null, msg)
-                        }
+                        val user: User = response.body()!!.data!!
+                        onResult(true, user, null)
                     } else {
                         val message = JSONObject(response.errorBody().string()).getJSONObject("error").getString("mensaje")
                         onResult(false, null, message)
@@ -97,14 +88,8 @@ class Repository {
                     response: Response<ResponseLogin>?
                 ) {
                     if (response!!.isSuccessful) {
-                        if (response.body()!!.success) {
-                            val user: User = response.body()!!.data!!
-                            onResult(true, user, null)
-                        } else {
-                            val msg: String =
-                                if (response.body()!!.error != null) response.body()!!.error?.mensaje!! else "Hubo un error vuelva a intentarlo"
-                            onResult(false, null, msg)
-                        }
+                        val user: User = response.body()!!.data!!
+                        onResult(true, user, null)
                     } else {
                         val message = JSONObject(response.errorBody().string()).getJSONObject("error").getString("mensaje")
                         onResult(false, null, message)
@@ -162,5 +147,51 @@ class Repository {
             onResult(false, null, "Hubo un error vuelva a intentarlo")
         }
     }
+
+
+    fun getUbigeo(
+        search: String,
+        filter: String,
+        token: String,
+        onResult: (isSuccess: Boolean, result: List<ResLocation>?, message: String?) -> Unit
+    )  {
+        val data = JSONObject()
+        data.put("search", search)
+        data.put("filter", filter)
+
+        val oo = JSONObject()
+        oo.put("method", "SP_UBIGEO")
+        oo.put("data", data)
+
+        val body: RequestBody = RequestBody.create(
+            MediaType.parse("application/json"),
+            oo.toString()
+        )
+
+        try {
+            Connection.instance.getUbigeo(body, token).enqueue(object :
+                Callback<ResponseLocation> {
+                override fun onResponse(
+                    call: Call<ResponseLocation>?,
+                    response: Response<ResponseLocation>?
+                ) {
+                    if (response!!.isSuccessful) {
+                        onResult(true, response.body()!!.data, null)
+                    } else {
+                        val message = JSONObject(response.errorBody().string()).getJSONObject("error").getString("mensaje")
+                        onResult(false, null, message)
+                    }
+                }
+                override fun onFailure(call: Call<ResponseLocation>?, t: Throwable?) {
+                    onResult(false, null, "Hubo un error vuelva a intentarlo")
+                }
+            })
+        } catch (e: java.lang.Exception){
+            onResult(false, null, "Hubo un error vuelva a intentarlo")
+        }
+    }
+
+
+
 
 }
