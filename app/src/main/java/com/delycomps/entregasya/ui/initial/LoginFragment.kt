@@ -1,14 +1,14 @@
-package com.delycomps.entregasya
+package com.delycomps.entregasya.ui.initial
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.delycomps.entregasya.HomeActivity
+import com.delycomps.entregasya.R
 import com.delycomps.entregasya.cache.SharedPrefsCache
 import com.delycomps.entregasya.webservice.Repository
 import com.google.android.material.snackbar.Snackbar
@@ -41,12 +41,20 @@ class LoginFragment : Fragment() {
                 Repository().login(username, password) { isSuccess, result, message ->
                     dialogLoading.hide()
                     if (isSuccess) {
-                        SharedPrefsCache(requireContext()).set("firstname", result!!.firstName + " " + result.lastName, "string")
+                        SharedPrefsCache(requireContext()).set("first_name", result!!.firstName, "string")
+                        SharedPrefsCache(requireContext()).set("last_name", result.firstName, "string")
+                        SharedPrefsCache(requireContext()).set("phone", result.phone, "string")
+                        SharedPrefsCache(requireContext()).set("email", result.email, "string")
+                        SharedPrefsCache(requireContext()).set("doct_type", result.docType, "string")
+                        SharedPrefsCache(requireContext()).set("doc_number", result.document, "string")
+
                         SharedPrefsCache(requireContext()).set("token", "Bearer ${result.token}", "string")
                         SharedPrefsCache(requireContext()).set("type", result.type, "string")
                         requireContext().startActivity(Intent(requireContext(), HomeActivity::class.java))
                     } else {
-                        Snackbar.make(view, message as CharSequence, Snackbar.LENGTH_LONG).setBackgroundTint(resources.getColor(R.color.colorPrimary)).show()
+                        Snackbar.make(view, message as CharSequence, Snackbar.LENGTH_LONG).setBackgroundTint(resources.getColor(
+                            R.color.colorPrimary
+                        )).show()
                     }
                 }
             }

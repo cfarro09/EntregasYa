@@ -22,9 +22,12 @@ data class User(
     @SerializedName("last_name")
     @Expose
     var lastName: String,
-    @SerializedName("document")
+    @SerializedName("doc_number")
     @Expose
     var document: String,
+    @SerializedName("doc_type")
+    @Expose
+    var docType: String,
     @SerializedName("city")
     @Expose
     var city: String,

@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
+import com.delycomps.entregasya.R
 import com.delycomps.entregasya.ui.main.SectionsPagerAdapter
 
 class InitialActivity : AppCompatActivity() {

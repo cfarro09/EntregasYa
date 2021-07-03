@@ -32,7 +32,6 @@ class HomeActivity : AppCompatActivity() {
         navView.setOnNavigationItemSelectedListener { menuItem ->
             val handled = NavigationUI.onNavDestinationSelected(menuItem, navController)
             if (handled) {
-                supportActionBar!!.setDisplayHomeAsUpEnabled(true)
                 val parent: ViewParent = navView.parent
                 if (parent is DrawerLayout) {
                     parent.closeDrawer(GravityCompat.START)

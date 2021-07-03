@@ -262,8 +262,17 @@
                         android:textSize="15sp"
                         android:hint="0"
                         android:layout_height="wrap_content"/>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Subir imagen"
+                        android:id="@+id/button_upload_image"
+                        />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/recyclerView_gallery"/>
                 </LinearLayout>
-
 
 
             </androidx.cardview.widget.CardView>
@@ -273,6 +282,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textColor="#FFF"
+                android:id="@+id/button_save_order"
                 android:background="@drawable/sty_button_primary"
                 android:text="Guardar"/>
         </LinearLayout>

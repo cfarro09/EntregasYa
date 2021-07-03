@@ -6,15 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".ui.orders.OrdersFragment"
     >
-    <ScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_orders"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp" />
-    </ScrollView>
+        android:layout_height="match_parent"
+        >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_orders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_new_order"
         android:layout_width="wrap_content"
@@ -26,11 +31,6 @@
         android:background="@color/colorPrimary"
         app:srcCompat="@drawable/ic_action_add" />
 
-        <!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
-        <!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
-        <!--        android:id="@+id/swiperefresh"-->
-        <!--        android:layout_width="match_parent"-->
-        <!--        android:layout_height="match_parent"-->
-        <!--        >-->
+
 
 </RelativeLayout>

@@ -1,14 +1,19 @@
 package com.delycomps.entregasya.webservice
 
+import android.util.Log
 import com.delycomps.entregasya.model.*
 import okhttp3.MediaType
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class Repository {
+
+
     fun login(
         username: String,
         password: String,
@@ -106,13 +111,25 @@ class Repository {
     }
 
     fun getOrder(
+        type: String,
         token: String,
+        all: Boolean = false,
         onResult: (isSuccess: Boolean, result: List<Order>?, message: String?) -> Unit
     )  {
 
         val oo = JSONObject()
-        oo.put("method", "DDDDDD")
-        oo.put("data", JSONObject())
+
+        if (all) {
+            oo.put("method", "SP_SEL_ORDER_STATUS")
+            oo.put("data", JSONObject())
+        } else {
+            val data = JSONObject()
+            data.put("status", JSONObject.NULL)
+            data.put("type", type)
+
+            oo.put("method", "SP_SEL_CLIENT_ORDER")
+            oo.put("data", data)
+        }
 
         val body: RequestBody = RequestBody.create(
             MediaType.parse("application/json"),
@@ -128,7 +145,7 @@ class Repository {
                 ) {
                     if (response!!.isSuccessful) {
                         if (response.body()!!.success) {
-                            onResult(true, response.body()!!.result, null)
+                            onResult(true, response.body()!!.data, null)
                         } else {
                             val msg: String =
                                 if (response.body()!!.msg != null) response.body()!!.msg!! else "Hubo un error vuelva a intentarlo"
@@ -191,7 +208,132 @@ class Repository {
         }
     }
 
+    fun getTracking(
+        idOrder: Int,
+        token: String,
+        onResult: (isSuccess: Boolean, result: List<Tracking>?, message: String?) -> Unit
+    )  {
+        val data = JSONObject()
+        data.put("id_order", idOrder)
 
+        val oo = JSONObject()
+        oo.put("method", "SP_SEL_ORDER_TRACKING")
+        oo.put("data", data)
+
+        val body: RequestBody = RequestBody.create(
+            MediaType.parse("application/json"),
+            oo.toString()
+        )
+
+        try {
+            Connection.instance.getTracking(body, token).enqueue(object :
+                Callback<ResponseTracking> {
+                override fun onResponse(
+                    call: Call<ResponseTracking>?,
+                    response: Response<ResponseTracking>?
+                ) {
+                    if (response!!.isSuccessful) {
+                        onResult(true, response.body()!!.data, null)
+                    } else {
+                        val message = JSONObject(response.errorBody().string()).getJSONObject("error").getString("mensaje")
+                        onResult(false, null, message)
+                    }
+                }
+                override fun onFailure(call: Call<ResponseTracking>?, t: Throwable?) {
+                    onResult(false, null, "Hubo un error vuelva a intentarlo")
+                }
+            })
+        } catch (e: java.lang.Exception){
+            onResult(false, null, "Hubo un error vuelva a intentarlo")
+        }
+    }
+
+
+    fun executeMain(
+        jo: JSONObject,
+        transaction: Boolean,
+        token: String,
+        onResult: (isSuccess: Boolean, result: String?, message: String?) -> Unit
+    )  {
+        val body: RequestBody = RequestBody.create(
+            MediaType.parse("application/json"),
+            jo.toString()
+        )
+        Log.d("jo_new_order", jo.toString())
+
+        try {
+            if (transaction) {
+                Connection.instance.execute(body, token).enqueue(object :
+                    Callback<ResponseCommon> {
+                    override fun onResponse(
+                        call: Call<ResponseCommon>?,
+                        response: Response<ResponseCommon>?
+                    ) {
+                        if (response!!.isSuccessful) {
+                            onResult(true, "Se guardó satisfactoriamente", null)
+                        } else {
+                            val message = JSONObject(response.errorBody().string()).getJSONObject("error").getString("mensaje")
+                            onResult(false, null, message)
+                        }
+                    }
+                    override fun onFailure(call: Call<ResponseCommon>?, t: Throwable?) {
+                        onResult(false, null, "Hubo un error vuelva a intentarlo")
+                    }
+                })
+            } else {
+                Connection.instance.executeSimple(body, token).enqueue(object :
+                    Callback<ResponseCommon> {
+                    override fun onResponse(
+                        call: Call<ResponseCommon>?,
+                        response: Response<ResponseCommon>?
+                    ) {
+                        if (response!!.isSuccessful) {
+                            onResult(true, "Se guardó satisfactoriamente", null)
+                        } else {
+                            val message = JSONObject(response.errorBody().string()).getJSONObject("error").getString("mensaje")
+                            onResult(false, null, message)
+                        }
+                    }
+                    override fun onFailure(call: Call<ResponseCommon>?, t: Throwable?) {
+                        onResult(false, null, "Hubo un error vuelva a intentarlo")
+                    }
+                })
+            }
+        } catch (e: java.lang.Exception){
+            onResult(false, null, "Hubo un error vuelva a intentarlo")
+        }
+    }
+
+    fun uploadImage(
+        file: File,
+        token: String,
+        onResult: (isSuccess: Boolean, result: String?, message: String?) -> Unit
+    )  {
+        val fileReqBody: RequestBody = RequestBody.create(MediaType.parse("*/*"), file)
+        val part: MultipartBody.Part = MultipartBody.Part.createFormData("imagen", file.name, fileReqBody)
+
+        try {
+            Connection.instance.uploadImage(part, token).enqueue(object :
+                Callback<ResponseImage> {
+                override fun onResponse(
+                    call: Call<ResponseImage>?,
+                    response: Response<ResponseImage>?
+                ) {
+                    if (response!!.isSuccessful) {
+                        onResult(true, response.body()!!.data!!.url, null)
+                    } else {
+                        val message = JSONObject(response.errorBody().string()).getJSONObject("error").getString("mensaje")
+                        onResult(false, null, message)
+                    }
+                }
+                override fun onFailure(call: Call<ResponseImage>?, t: Throwable?) {
+                    onResult(false, null, "Hubo un error vuelva a intentarlo")
+                }
+            })
+        } catch (e: java.lang.Exception){
+            onResult(false, null, "Hubo un error vuelva a intentarlo")
+        }
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.delycomps.entregasya.ui.orders
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
@@ -11,18 +12,23 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.delycomps.entregasya.AdapterOrder
-import com.delycomps.entregasya.NewOrderActivity
-import com.delycomps.entregasya.R
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.delycomps.entregasya.*
+import com.delycomps.entregasya.Constants.CODE_LISTORRDER_TO_DETAIALORDER
+import com.delycomps.entregasya.adapters.AdapterOrder
 import com.delycomps.entregasya.cache.SharedPrefsCache
+import com.delycomps.entregasya.model.Order
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_order.*
 
 class OrdersFragment : Fragment() {
 
     private lateinit var orderViewModel: OrdersViewModel
+    private lateinit var adapterOrder: AdapterOrder
     private lateinit var rv: RecyclerView
-
+    private var typeUser = ""
+    private val code = 2000
+    private val codeManage = 2001
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,9 +37,31 @@ class OrdersFragment : Fragment() {
         orderViewModel = ViewModelProviders.of(this).get(OrdersViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_order, container, false)
 
-        context?.let { orderViewModel.getListOrder(SharedPrefsCache(it).getToken())}
+        context?.let { orderViewModel.getListOrder(SharedPrefsCache(it).getToken(), SharedPrefsCache(it).get("type", "string") as String)}
 
         return root
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == code) {
+                val status = data!!.getBooleanExtra("neworder", false)
+                if (status) {
+                    val text = if (typeUser == "CLIENT") "El pedido fue asignado correctamente." else "Nuevo pedido registrado correctamente."
+                    Snackbar.make(rv, text, Snackbar.LENGTH_LONG).show()
+                    context?.let { orderViewModel.getListOrder(SharedPrefsCache(it).getToken(), typeUser)}
+                }
+            }
+        } else {
+            if (requestCode == codeManage) {
+                val newStatus = SharedPrefsCache(requireContext()).get("new_status", "string") as String
+                val position = SharedPrefsCache(requireContext()).get("position", "int") as Int
+
+                if (newStatus.isNotEmpty() && position > -1) {
+                    adapterOrder.changeStatus(newStatus, position)
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,27 +72,55 @@ class OrdersFragment : Fragment() {
         builderLoading.setView(R.layout.layout_loading_dialog)
         val dialogLoading: AlertDialog = builderLoading.create()
 
+        typeUser = SharedPrefsCache(requireContext()).get("type", "string") as String
         rv =  view.findViewById(R.id.rv_orders)
         rv.layoutManager = LinearLayoutManager(activity)
 
-        orderViewModel.listOrders.observe(viewLifecycleOwner, Observer {
-            rv.adapter = AdapterOrder(it, null)
+        val swiper: SwipeRefreshLayout = view.findViewById(R.id.swiperefresh)
+
+        swiper.setOnRefreshListener {
+            context?.let { orderViewModel.getListOrder(SharedPrefsCache(it).getToken(), SharedPrefsCache(it).get("type", "string") as String)}
+            swiper.isRefreshing = false
+        }
+
+        orderViewModel.listOrders.observe(viewLifecycleOwner,  {
+            adapterOrder = AdapterOrder(it,  object : AdapterOrder.ListAdapterListener {
+                override fun onClickAtDetailOrder(order: Order, position: Int) {
+                    if (typeUser == "CLIENT") {
+                        val intent = Intent(activity, DetailOrderActivity::class.java)
+                        intent.putExtra("id_order", order.idOrder)
+                        intent.putExtra("code_order", order.orderCode)
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(activity, ManageOrderActivity::class.java)
+                        intent.putExtra("POSITION", position)
+                        intent.putExtra("order", order)
+                        startActivityForResult(intent, codeManage)
+                    }
+                }
+            })
+
+            rv.adapter = adapterOrder
         })
 
-        orderViewModel.loading.observe(viewLifecycleOwner, Observer {
+        orderViewModel.loading.observe(viewLifecycleOwner, {
             if (it)
                 dialogLoading.show()
             else
                 dialogLoading.hide()
         })
 
-        orderViewModel.textError.observe(viewLifecycleOwner, Observer {
+        orderViewModel.textError.observe(viewLifecycleOwner,  {
             Snackbar.make(rv, it as CharSequence, Snackbar.LENGTH_LONG).setBackgroundTint(resources.getColor(R.color.colorPrimary)).show()
         })
 
         button_new_order.setOnClickListener {
-            context?.let { it1 -> it1.startActivity(Intent(it1, NewOrderActivity::class.java)) }
+            if (typeUser == "CLIENT")
+                startActivityForResult(Intent(activity, NewOrderActivity::class.java), code)
+            else
+                startActivityForResult(Intent(activity, OrderPendingActivity::class.java), code)
         }
     }
 }
+
 

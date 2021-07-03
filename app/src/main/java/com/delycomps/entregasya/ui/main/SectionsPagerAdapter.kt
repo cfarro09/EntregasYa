@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.delycomps.entregasya.LoginFragment
+import com.delycomps.entregasya.ui.initial.LoginFragment
 import com.delycomps.entregasya.R
-import com.delycomps.entregasya.RegisterFragment
+import com.delycomps.entregasya.ui.initial.RegisterFragment
 
 
 private val TAB_TITLES = arrayOf(

@@ -2,7 +2,6 @@ package com.delycomps.entregasya
 
 import android.Manifest
 import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -18,12 +17,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.delycomps.entregasya.adapters.AdapterGallery
 import com.delycomps.entregasya.cache.SharedPrefsCache
 import com.delycomps.entregasya.helpers.Helpers
 import com.delycomps.entregasya.helpers.Helpers.showToast
 import com.delycomps.entregasya.model.ResLocation
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_new_order.*
 import kotlinx.android.synthetic.main.dialog_ubigeo.view.*
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -37,13 +42,19 @@ class NewOrderActivity : AppCompatActivity() {
     var optionLocation = ""
     var initLocation = "department"
     var setLocation = ""
-    lateinit var departmentList: List<ResLocation>
-    lateinit var provinceList: List<ResLocation>
-    lateinit var districtList: List<ResLocation>
-
+    private var departmentList: List<ResLocation> = listOf()
+    private var provinceList: List<ResLocation> = listOf()
+    var districtList: List<ResLocation> = listOf()
+    private lateinit var dialogLoading: AlertDialog
     private val WRITE_EXTERNAL_STORAGE_PERMISSION = 100
     private val CODE_RESULT_CAMERA = 10001
     private var currentPhotoPath: String = ""
+    private var pickup_ubigeo = ""
+    private var delivery_ubigeo = ""
+    private lateinit var rvGallery: RecyclerView
+    val imagesProduct = JSONArray()
+
+//    private val listImage: MutableList<String> = ArrayList()
 
     private lateinit var newOrderViewModel: NewOrderViewModel
 
@@ -55,11 +66,20 @@ class NewOrderActivity : AppCompatActivity() {
 
         newOrderViewModel.getListLocation("", "department", SharedPrefsCache(this).getToken())
 
+        val builderLoading: AlertDialog.Builder = AlertDialog.Builder(this)
+        builderLoading.setCancelable(false) // if you want user to wait for some process to finish,
+        builderLoading.setView(R.layout.layout_loading_dialog)
+        dialogLoading = builderLoading.create()
+
+        val layoutManager = GridLayoutManager(this, 2)
+        rvGallery = recyclerView_gallery
+        rvGallery.setHasFixedSize(true)
+        rvGallery.layoutManager = layoutManager
+
         val  builder: AlertDialog.Builder = AlertDialog.Builder(this)
         val inflater = this.layoutInflater
         val dialogUbigeo = inflater.inflate(R.layout.dialog_ubigeo, null)
         builder.setView(dialogUbigeo)
-
         val dialog = builder.create()
 
         val spinnerDepartment = dialogUbigeo.spinner_department
@@ -89,8 +109,29 @@ class NewOrderActivity : AppCompatActivity() {
             }
         }
 
-        newOrderViewModel.locationList.observe(this, Observer{ locations ->
+        val ff = AdapterGallery(listOf())
 
+        rvGallery.adapter = ff
+
+        newOrderViewModel.image.observe(this, Observer {
+            dialogLoading.hide()
+            imagesProduct.put(it)
+            ff.addItem(it)
+        })
+
+        newOrderViewModel.saveSuccess.observe(this, Observer {
+            dialogLoading.hide()
+            if (it) {
+                val data = Intent()
+                data.putExtra("neworder", true)
+                setResult(RESULT_OK, data)
+                finish()
+            }
+            else
+                Snackbar.make(order_pickup_address, "Hubo un error" as CharSequence, Snackbar.LENGTH_LONG).setBackgroundTint(resources.getColor(R.color.colorPrimary)).show()
+        })
+
+        newOrderViewModel.locationList.observe(this, Observer{ locations ->
             val locationstmp: MutableList<String> = locations.map { it.value!! }.toMutableList()
             locationstmp.add(0, "SELECCIONE")
 
@@ -123,14 +164,24 @@ class NewOrderActivity : AppCompatActivity() {
         })
 
         dialogUbigeo.save_ubigeo.setOnClickListener {
-            val department = spinnerDepartment.selectedItem.toString()
-            val province = spinnerProvince.selectedItem.toString()
-            val district = spinnerDistrict.selectedItem.toString()
-            dialog.hide()
-            if (optionLocation == "pickup")
-                order_pickup_ubigeo.setText("$department - $province - $district")
-            else
-                order_delivery_ubigeo.setText("$department - $province - $district")
+            val department = spinnerDepartment.selectedItem?.toString()
+            val province = spinnerProvince?.selectedItem?.toString()
+            val district = spinnerDistrict?.selectedItem?.toString()
+
+            if (!department.isNullOrEmpty() && !province.isNullOrEmpty() && !district.isNullOrEmpty() && district != "SELECCIONE") {
+                dialog.hide()
+
+                val rr: ResLocation? = districtList.find { it.value == district }
+
+                if (optionLocation == "pickup") {
+                    pickup_ubigeo = rr!!.ubigeo!!
+                    order_pickup_ubigeo.setText("$department - $province - $district")
+                }
+                else {
+                    delivery_ubigeo = rr!!.ubigeo!!
+                    order_delivery_ubigeo.setText("$department - $province - $district")
+                }
+            }
         }
 
         order_pickup_ubigeo.setOnClickListener {
@@ -163,7 +214,65 @@ class NewOrderActivity : AppCompatActivity() {
             dialog.show()
         }
 
-        verifyPermissionWriteStorage();
+        verifyPermissionWriteStorage()
+
+        button_upload_image.setOnClickListener {
+            dispatchTakePictureIntent()
+        }
+
+        button_save_order.setOnClickListener {
+            val orderPickupAddress = order_pickup_address.text.toString()
+            val orderPickupReference = order_pickup_reference.text.toString()
+            val orderPickupContactName = order_pickup_contact_name.text.toString()
+            val orderPickupContactPhone = order_pickup_contact_phone.text.toString()
+            val orderDeliveryAddress = order_delivery_address.text.toString()
+            val orderDeliveryReference = order_delivery_reference.text.toString()
+            val orderDeliveryContactName = order_delivery_contact_name.text.toString()
+            val orderDeliveryContactPhone = order_delivery_contact_phone.text.toString()
+
+            val productName = product_name.text.toString()
+            val productQuantity = product_quantity.text.toString()
+
+            if (orderPickupAddress != "" && orderPickupReference != "" && orderPickupContactName != "" && orderPickupContactPhone != "" && orderDeliveryAddress != "" &&
+                orderDeliveryReference != "" && orderDeliveryContactName != "" && orderDeliveryContactPhone != "" && pickup_ubigeo != "" && delivery_ubigeo != "" && productName != "" && productQuantity != "") {
+
+                val headerObject = JSONObject()
+                headerObject.put("order_pickup_address", orderPickupAddress)
+                headerObject.put("order_pickup_reference", orderPickupReference)
+                headerObject.put("order_pickup_ubigeo", pickup_ubigeo)
+                headerObject.put("order_pickup_contact_name", orderPickupContactName)
+                headerObject.put("order_pickup_contact_phone", orderPickupContactPhone)
+                headerObject.put("order_delivery_address", orderDeliveryAddress)
+                headerObject.put("order_delivery_reference", orderDeliveryReference)
+                headerObject.put("order_delivery_ubigeo", delivery_ubigeo)
+                headerObject.put("order_delivery_contact_name", orderDeliveryContactName)
+                headerObject.put("order_delivery_contact_phone", orderDeliveryContactPhone)
+
+                val headerData = JSONObject()
+                headerData.put("data", headerObject)
+
+                val productData = JSONObject()
+                productData.put("product_name", productName)
+                productData.put("product_quantity", productQuantity)
+                productData.put("product_images", imagesProduct)
+
+                val productsArray = JSONArray()
+                productsArray.put(productData)
+
+                val detailData = JSONObject()
+                detailData.put("data", productsArray)
+
+                val oo = JSONObject()
+                oo.put("method", "SP_INS_ORDER")
+                oo.put("header", headerData)
+                oo.put("details", detailData)
+
+                dialogLoading.show()
+                newOrderViewModel.executeMain(oo, SharedPrefsCache(applicationContext).getToken())
+            } else {
+                Snackbar.make(order_pickup_address, "Debe completar todos los campos" as CharSequence, Snackbar.LENGTH_LONG).setBackgroundTint(resources.getColor(R.color.colorPrimary)).show()
+            }
+        }
     }
 
     @Throws(IOException::class)
@@ -227,7 +336,7 @@ class NewOrderActivity : AppCompatActivity() {
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                         this,
-                        "com.example.android.fileprovider",
+                        "com.delycomps.entregasyasharing.provider",
                         it
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
@@ -245,9 +354,9 @@ class NewOrderActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent)
         when (requestCode) {
             CODE_RESULT_CAMERA -> if (resultCode == RESULT_OK) {
-//                progress = ProgressDialog.show(this, "Loading", "Espere, por favor.")
+                dialogLoading.show()
                 val f = saveBitmapToFile(File(currentPhotoPath))
-//                orderDetailViewModel.uploadPhoto(f!!, getToken(context!!), "IMAGEN_PD", "dsandsjandsa")
+                newOrderViewModel.uploadImage(f!!, SharedPrefsCache(this).getToken())
             }
         }
     }

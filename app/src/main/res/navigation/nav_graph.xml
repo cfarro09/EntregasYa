@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.delycomps.entregasya.LoginFragment"
+        android:name="com.delycomps.entregasya.ui.initial.LoginFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_login">
 
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.delycomps.entregasya.RegisterFragment"
+        android:name="com.delycomps.entregasya.ui.initial.RegisterFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_register">
 

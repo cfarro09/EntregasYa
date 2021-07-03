@@ -23,13 +23,13 @@ class SharedPrefsCache(context: Context) {
         }
     }
 
-    fun set(key: String, value: Any, type: String) {
+    fun set(key: String, value: Any?, type: String) {
         val editor: SharedPreferences.Editor = pref.edit()
         when (type) {
-            "int" -> editor.putInt(key, value as Int)
-            "bool" -> editor.putBoolean(key, value as Boolean)
-            "float" -> editor.putFloat(key, value as Float)
-            "string" -> editor.putString(key, value as String)
+            "int" -> editor.putInt(key, if (value != null) value as Int else 0)
+            "bool" -> editor.putBoolean(key, if (value != null) value as Boolean else false)
+            "float" -> editor.putFloat(key, if (value != null) value as Float else 0.toFloat())
+            "string" -> editor.putString(key, if (value != null) value as String else "")
         }
         editor.apply() // commit changes
     }

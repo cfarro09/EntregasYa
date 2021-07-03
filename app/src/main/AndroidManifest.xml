@@ -3,8 +3,11 @@
     package="com.delycomps.entregasya">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -15,11 +18,28 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ManageOrderActivity"
+            android:label="@string/title_activity_manage_order"></activity>
+        <activity
+            android:name=".OrderPendingActivity"
+            android:label="Ordenes pendientes" />
+        <activity android:name=".DetailOrderActivity" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.delycomps.entregasyasharing.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
             android:name=".SplashScreenActivity"
             android:noHistory="true"
             android:screenOrientation="fullSensor"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        >
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,15 +48,13 @@
         </activity>
         <activity
             android:name=".NewOrderActivity"
-            android:label="@string/new_order"
-            />
-        <activity
-            android:name=".HomeActivity" />
+            android:label="@string/new_order" />
+        <activity android:name=".HomeActivity" />
         <activity
             android:name=".InitialActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:noHistory="true"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

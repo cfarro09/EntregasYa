@@ -35,7 +35,7 @@
     <string name="delivery">Entrega</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_home">Home</string>
-    <string name="orders">Pedidos</string>
+    <string name="orders">Mis Pedidos</string>
     <string name="profile">Perfil</string>
     <string name="new_order">Nuevo pedido</string>
     <string name="title_dashboard">Dashboard</string>
@@ -60,4 +60,13 @@
     <string name="packing">Empaque</string>
     <string name="contact_name">Nombre del contacto</string>
     <string name="contact_phone">Teléfono del contacto</string>
+    <string name="plate_number">PLACA</string>
+    <string name="driver">Chofer</string>
+    <string name="title_activity_manage_order">ManageOrderActivity</string>
+    <string name="info">Info</string>
+    <string name="gallery">Galeria</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="status">Estado</string>
 </resources>

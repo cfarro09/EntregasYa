@@ -128,5 +128,20 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:text="Jirón Enrique Barron 1323 Lince"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#000"
+            android:textAllCaps="true"
+            android:text="@string/phone"/>
+        <TextView
+            android:id="@+id/profile_phone"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:textColor="#000"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:text="Jirón Enrique Barron 1323 Lince"/>
     </LinearLayout>
 </RelativeLayout>

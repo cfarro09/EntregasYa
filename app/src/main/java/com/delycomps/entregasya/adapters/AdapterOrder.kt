@@ -1,21 +1,18 @@
-package com.delycomps.entregasya
+package com.delycomps.entregasya.adapters
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.delycomps.entregasya.R
 import com.delycomps.entregasya.model.Order
-import java.util.*
 
 
 class AdapterOrder(
     private var listOrder: List<Order>,
-    private val refListener: ListAdapterListener?
+    private val refListener: ListAdapterListener
 ) : RecyclerView.Adapter<AdapterOrder.OrderViewHolder>() {
     private lateinit var mContext: Context
 
@@ -35,6 +32,11 @@ class AdapterOrder(
 
     override fun getItemViewType(position: Int): Int {
         return position
+    }
+
+    fun changeStatus(newStatus: String, position: Int){
+        listOrder[position].status = newStatus
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
@@ -72,10 +74,7 @@ inner class OrderViewHolder internal constructor(itemView: View) :
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
                 val order = listOrder[position]
-//                if (order.status != STATUS_ASIGNADO_PEDIDO) {
-//                    refListener.onClickAtDetailOrder(order, position)
-//                } else
-//                    Helpers.showToast(mContext, "Debe iniciar el pedido antes de ver el detalle.")
+                refListener.onClickAtDetailOrder(order, position)
             }
         }
 

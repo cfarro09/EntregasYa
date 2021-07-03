@@ -3,10 +3,15 @@ package com.delycomps.entregasya.model
 import org.json.JSONObject
 import java.util.*
 
-data class Response(
+data class ResponseImage(
     var success: Boolean,
     var msg: String?,
-    var result: Any = false
+    var data: DataImage?
+)
+
+data class ResponseCommon(
+    var success: Boolean,
+    var msg: String?
 )
 
 data class ResponseLogin(
@@ -16,10 +21,20 @@ data class ResponseLogin(
     var error: ResError?
 )
 
+data class DataImage(
+    var url: String
+)
+
 data class ResponseOrders(
     var success: Boolean,
     var msg: String?,
-    var result: List<Order>
+    var data: List<Order>
+)
+
+data class ResponseTracking(
+    var success: Boolean,
+    var msg: String?,
+    var data: List<Tracking>
 )
 
 data class ResError(
