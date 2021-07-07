@@ -22,6 +22,7 @@ class Repository {
         val oo = JSONObject()
         oo.put("usr", username)
         oo.put("password", password)
+        oo.put("origin", "APP")
 
         val data = JSONObject()
         data.put("data", oo)
