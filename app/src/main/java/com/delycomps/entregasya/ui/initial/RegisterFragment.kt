@@ -49,11 +49,17 @@ class RegisterFragment : Fragment() {
                 Repository().register(firstName, lastName, email, username, password) { isSuccess, result, message ->
                     dialogLoading.hide()
                     if (isSuccess) {
-                        context?.let { it1 -> {
-                            SharedPrefsCache(it1).set("fullname", result!!.fullName, "string")
-                            SharedPrefsCache(it1).set("token", result.token, "string")
-                            it1.startActivity(Intent(it1, HomeActivity::class.java))
-                        }}
+                        SharedPrefsCache(requireContext()).set("first_name", result!!.firstName, "string")
+                        SharedPrefsCache(requireContext()).set("last_name", result.firstName, "string")
+                        SharedPrefsCache(requireContext()).set("phone", result.phone, "string")
+                        SharedPrefsCache(requireContext()).set("email", result.email, "string")
+                        SharedPrefsCache(requireContext()).set("doct_type", result.docType, "string")
+                        SharedPrefsCache(requireContext()).set("doc_number", result.document, "string")
+
+                        SharedPrefsCache(requireContext()).set("token", "Bearer ${result.token}", "string")
+                        SharedPrefsCache(requireContext()).set("type", result.type, "string")
+
+                        requireContext().startActivity(Intent(requireContext(), HomeActivity::class.java))
                     } else
                         Snackbar.make(view, message as CharSequence, Snackbar.LENGTH_LONG).setBackgroundTint(resources.getColor(
                             R.color.colorPrimary

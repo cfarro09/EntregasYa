@@ -13,13 +13,13 @@
         android:layout_marginTop="30dp"
         android:layout_height="wrap_content">
         <ImageView
-            android:layout_width="140dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:scaleType="centerInside"
             android:adjustViewBounds="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="30dp"
-            android:src="@drawable/logoya"
+            android:src="@drawable/tusentregas"
             />
         <EditText
             android:id="@+id/login_username"
@@ -31,8 +31,8 @@
             android:drawablePadding="10dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:textColorHint="#FFF"
-            android:textColor="#FFF"
+            android:textColorHint="#636363"
+            android:textColor="#FF636363"
             android:lines="1"
             android:singleLine="true"
             android:textSize="15sp"
@@ -47,13 +47,13 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_password"
                 app:hintEnabled="false"
-                android:textColorHint="#FFF"
+                android:textColorHint="#FF636363"
                 android:padding="10dp"
                 android:drawablePadding="10dp"
                 android:layout_width="match_parent"
                 android:background="@drawable/input_style"
                 android:hint="@string/contrase_a"
-                android:textColor="#FFF"
+                android:textColor="#FF636363"
                 android:drawableStart="@drawable/ic_action_lock"
                 android:inputType="textPassword"
                 android:layout_height="wrap_content"

@@ -39,7 +39,7 @@ import java.util.*
 
 class NewOrderActivity : AppCompatActivity() {
 
-    var optionLocation = ""
+    private var optionLocation = ""
     var initLocation = "department"
     var setLocation = ""
     private var departmentList: List<ResLocation> = listOf()
@@ -52,7 +52,7 @@ class NewOrderActivity : AppCompatActivity() {
     private var pickup_ubigeo = ""
     private var delivery_ubigeo = ""
     private lateinit var rvGallery: RecyclerView
-    val imagesProduct = JSONArray()
+    private val imagesProduct = JSONArray()
 
 //    private val listImage: MutableList<String> = ArrayList()
 
@@ -230,11 +230,15 @@ class NewOrderActivity : AppCompatActivity() {
             val orderDeliveryContactName = order_delivery_contact_name.text.toString()
             val orderDeliveryContactPhone = order_delivery_contact_phone.text.toString()
 
+            val orderDeliveryContactDocument = order_delivery_contact_document.text.toString()
+            val orderPickupContactDocument = order_pickup_contact_document.text.toString()
+
             val productName = product_name.text.toString()
             val productQuantity = product_quantity.text.toString()
 
             if (orderPickupAddress != "" && orderPickupReference != "" && orderPickupContactName != "" && orderPickupContactPhone != "" && orderDeliveryAddress != "" &&
-                orderDeliveryReference != "" && orderDeliveryContactName != "" && orderDeliveryContactPhone != "" && pickup_ubigeo != "" && delivery_ubigeo != "" && productName != "" && productQuantity != "") {
+                orderDeliveryReference != "" && orderDeliveryContactName != "" && orderDeliveryContactPhone != "" && pickup_ubigeo != "" && delivery_ubigeo != "" && productName != "" &&
+                productQuantity != "" && orderDeliveryContactDocument != "" && orderPickupContactDocument != "" ) {
 
                 val headerObject = JSONObject()
                 headerObject.put("order_pickup_address", orderPickupAddress)
@@ -247,6 +251,9 @@ class NewOrderActivity : AppCompatActivity() {
                 headerObject.put("order_delivery_ubigeo", delivery_ubigeo)
                 headerObject.put("order_delivery_contact_name", orderDeliveryContactName)
                 headerObject.put("order_delivery_contact_phone", orderDeliveryContactPhone)
+
+                headerObject.put("order_delivery_contact_document", orderDeliveryContactDocument)
+                headerObject.put("order_pickup_contact_document", orderPickupContactDocument)
 
                 val headerData = JSONObject()
                 headerData.put("data", headerObject)

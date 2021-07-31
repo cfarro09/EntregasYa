@@ -58,7 +58,6 @@ open class Order : Parcelable {
     @SerializedName("images_order")
     @Expose
     var imagesOrder: String?
-
     @SerializedName("pickup_ubigeo")
     @Expose
     var pickupTextUbigeo: String?
@@ -72,6 +71,13 @@ open class Order : Parcelable {
     @SerializedName("delivery_reference")
     @Expose
     var deliveryReference: String?
+
+    @SerializedName("count_images_pickup")
+    @Expose
+    var countImagesPickup: Int
+    @SerializedName("count_images_delivery")
+    @Expose
+    var countImagesDelivery: Int
 
     constructor(
         idOrder: Int,
@@ -92,7 +98,9 @@ open class Order : Parcelable {
         pickupTextUbigeo: String,
         deliveryTextUbigeo: String,
         pickupReference: String,
-        deliveryReference: String
+        deliveryReference: String,
+        countImagesPickup: Int,
+        countImagesDelivery: Int
     ) {
         this.idOrder = idOrder
         this.orderCode = orderCode
@@ -113,6 +121,8 @@ open class Order : Parcelable {
         this.deliveryTextUbigeo = deliveryTextUbigeo
         this.pickupReference = pickupReference
         this.deliveryReference = deliveryReference
+        this.countImagesPickup = countImagesPickup
+        this.countImagesDelivery = countImagesDelivery
     }
 
     protected constructor(parcel: Parcel) {
@@ -135,6 +145,8 @@ open class Order : Parcelable {
         deliveryTextUbigeo = parcel.readString()
         pickupReference = parcel.readString()
         deliveryReference = parcel.readString()
+        countImagesPickup = parcel.readInt()
+        countImagesDelivery = parcel.readInt()
     }
 
     override fun describeContents(): Int {
@@ -161,6 +173,8 @@ open class Order : Parcelable {
         p0.writeString(deliveryTextUbigeo)
         p0.writeString(pickupReference)
         p0.writeString(deliveryReference)
+        p0.writeInt(countImagesPickup)
+        p0.writeInt(countImagesDelivery)
     }
 
     companion object CREATOR : Parcelable.Creator<Order> {

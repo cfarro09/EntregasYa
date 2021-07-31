@@ -34,8 +34,10 @@ class AdapterOrder(
         return position
     }
 
-    fun changeStatus(newStatus: String, position: Int){
+    fun changeStatus(newStatus: String, position: Int, countImagesDelivery: Int, countImagesPickup: Int){
         listOrder[position].status = newStatus
+        listOrder[position].countImagesDelivery = countImagesDelivery
+        listOrder[position].countImagesPickup = countImagesPickup
         notifyDataSetChanged()
     }
 

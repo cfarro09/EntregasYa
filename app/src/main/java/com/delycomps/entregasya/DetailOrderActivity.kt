@@ -92,6 +92,7 @@ class DetailOrderActivity : AppCompatActivity() {
                     mDataList[3].status = "DID"
                     mDataList[4].status = "DID"
                     mDataList[4].status = "DID"
+                    mDataList[5].status = "DID"
                     mDataList[5].dateCreated = it.dateCreated
                 }
             }

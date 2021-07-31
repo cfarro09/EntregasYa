@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.delycomps.entregasya.ConnectActivity
 import com.delycomps.entregasya.HomeActivity
 import com.delycomps.entregasya.R
 import com.delycomps.entregasya.cache.SharedPrefsCache
@@ -50,7 +51,11 @@ class LoginFragment : Fragment() {
 
                         SharedPrefsCache(requireContext()).set("token", "Bearer ${result.token}", "string")
                         SharedPrefsCache(requireContext()).set("type", result.type, "string")
-                        requireContext().startActivity(Intent(requireContext(), HomeActivity::class.java))
+
+                        if (result.type == "CLIENT")
+                            requireContext().startActivity(Intent(requireContext(), HomeActivity::class.java))
+                        else
+                            requireContext().startActivity(Intent(requireContext(), ConnectActivity::class.java))
                     } else {
                         Snackbar.make(view, message as CharSequence, Snackbar.LENGTH_LONG).setBackgroundTint(resources.getColor(
                             R.color.colorPrimary

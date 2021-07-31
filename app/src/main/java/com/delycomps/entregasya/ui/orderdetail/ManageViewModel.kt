@@ -3,10 +3,12 @@ package com.delycomps.entregasya.ui.orderdetail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.delycomps.entregasya.model.DataImage
 import com.delycomps.entregasya.model.Order
 import com.delycomps.entregasya.model.Tracking
 import com.delycomps.entregasya.webservice.Repository
 import org.json.JSONObject
+import java.io.File
 
 class ManageViewModel : ViewModel() {
 
@@ -21,6 +23,38 @@ class ManageViewModel : ViewModel() {
 
     private val _success: MutableLiveData<Boolean> = MutableLiveData()
     val success: LiveData<Boolean> = _success
+
+    private val _image: MutableLiveData<String> = MutableLiveData()
+    val image: LiveData<String> = _image
+
+    private val _listImages: MutableLiveData<List<DataImage>> = MutableLiveData()
+    val listImages: LiveData<List<DataImage>> = _listImages
+
+    fun getListImage(idOrder: Int, token: String) {
+        _loading.value = true
+        Repository().getListImages(idOrder, token) { isSuccess, result, message ->
+            _loading.value = false
+            if (isSuccess) {
+                _listImages.value = result!!
+            } else {
+//                _success.value = false
+                _textError.value = message
+            }
+        }
+    }
+
+    fun uploadImage(file: File, type: String, idOrder: Int, token: String) {
+        _loading.value = true
+        Repository().uploadImageDRiver(file, type, idOrder, token) { isSuccess, result, message ->
+            _loading.value = false
+            if (isSuccess) {
+                _image.value = result!!
+            } else {
+//                _success.value = false
+                _textError.value = message
+            }
+        }
+    }
 
     fun assignStatus(token: String, status: String, idOrder: Int) {
         _loading.value = true

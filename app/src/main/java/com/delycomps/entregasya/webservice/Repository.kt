@@ -78,7 +78,7 @@ class Repository {
         data.put("type", "CLIENT")
 
         val oo = JSONObject()
-        oo.put("method", "SP_INS_USER")
+        oo.put("method", "SP_INS_CLIENT")
         oo.put("data", data)
 
         val body: RequestBody = RequestBody.create(
@@ -158,6 +158,46 @@ class Repository {
                 }
 
                 override fun onFailure(call: Call<ResponseOrders>?, t: Throwable?) {
+                    onResult(false, null, "Hubo un error vuelva a intentarlo")
+                }
+            })
+        } catch (e: java.lang.Exception){
+            onResult(false, null, "Hubo un error vuelva a intentarlo")
+        }
+    }
+
+    fun getListImages(
+        idOrder: Int,
+        token: String,
+        onResult: (isSuccess: Boolean, result: List<DataImage>?, message: String?) -> Unit
+    )  {
+        val data = JSONObject()
+        data.put("id_order", idOrder)
+
+        val oo = JSONObject()
+        oo.put("method", "SP_SEL_ORDER_IMAGE")
+        oo.put("data", data)
+
+        val body: RequestBody = RequestBody.create(
+            MediaType.parse("application/json"),
+            oo.toString()
+        )
+
+        try {
+            Connection.instance.getImages(body, token).enqueue(object :
+                Callback<ResponseListImage> {
+                override fun onResponse(
+                    call: Call<ResponseListImage>?,
+                    response: Response<ResponseListImage>?
+                ) {
+                    if (response!!.isSuccessful) {
+                        onResult(true, response.body()!!.data, null)
+                    } else {
+                        val message = JSONObject(response.errorBody().string()).getJSONObject("error").getString("mensaje")
+                        onResult(false, null, message)
+                    }
+                }
+                override fun onFailure(call: Call<ResponseListImage>?, t: Throwable?) {
                     onResult(false, null, "Hubo un error vuelva a intentarlo")
                 }
             })
@@ -315,6 +355,43 @@ class Repository {
 
         try {
             Connection.instance.uploadImage(part, token).enqueue(object :
+                Callback<ResponseImage> {
+                override fun onResponse(
+                    call: Call<ResponseImage>?,
+                    response: Response<ResponseImage>?
+                ) {
+                    if (response!!.isSuccessful) {
+                        onResult(true, response.body()!!.data!!.url, null)
+                    } else {
+                        val message = JSONObject(response.errorBody().string()).getJSONObject("error").getString("mensaje")
+                        onResult(false, null, message)
+                    }
+                }
+                override fun onFailure(call: Call<ResponseImage>?, t: Throwable?) {
+                    onResult(false, null, "Hubo un error vuelva a intentarlo")
+                }
+            })
+        } catch (e: java.lang.Exception){
+            onResult(false, null, "Hubo un error vuelva a intentarlo")
+        }
+    }
+
+    fun uploadImageDRiver(
+        file: File,
+        type: String,
+        idOrder: Int,
+        token: String,
+        onResult: (isSuccess: Boolean, result: String?, message: String?) -> Unit
+    )  {
+        val fileReqBody: RequestBody = RequestBody.create(MediaType.parse("*/*"), file)
+        val part: MultipartBody.Part = MultipartBody.Part.createFormData("imagen", file.name, fileReqBody)
+
+        val rType: RequestBody = RequestBody.create(MediaType.parse("text/plain"), type)
+        val rIdOrder: RequestBody = RequestBody.create(MediaType.parse("text/plain"), idOrder.toString())
+        val rDescription: RequestBody = RequestBody.create(MediaType.parse("text/plain"), "test1")
+
+        try {
+            Connection.instance.uploadImageDriver(part, rType, rIdOrder, rDescription, token).enqueue(object :
                 Callback<ResponseImage> {
                 override fun onResponse(
                     call: Call<ResponseImage>?,

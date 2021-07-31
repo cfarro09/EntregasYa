@@ -77,11 +77,11 @@ class ExampleTimeLineAdapter(private val mFeedList: List<Tracking>) : RecyclerVi
         }
         when (position) {
             0 -> holder.imageItem.setBackgroundResource(R.drawable.x1tracking)
-            1 -> holder.imageItem.setBackgroundResource(R.drawable.x2tracking)
-            2 -> holder.imageItem.setBackgroundResource(R.drawable.x3tracking)
-            3 -> holder.imageItem.setBackgroundResource(R.drawable.x4tracking)
-            4 -> holder.imageItem.setBackgroundResource(if (true) R.drawable.x5tracking else R.drawable.x5gristracking)
-            5 -> holder.imageItem.setBackgroundResource(R.drawable.x6tracking)
+            1 -> holder.imageItem.setBackgroundResource((if (timeLineModel.status == "DID") R.drawable.x2tracking else R.drawable.x2trackinggris))
+            2 -> holder.imageItem.setBackgroundResource((if (timeLineModel.status == "DID") R.drawable.x3tracking else R.drawable.x3trackinggris))
+            3 -> holder.imageItem.setBackgroundResource((if (timeLineModel.status == "DID") R.drawable.x4tracking else R.drawable.x4trackinggris))
+            4 -> holder.imageItem.setBackgroundResource(if (timeLineModel.status == "DID") R.drawable.x5tracking else R.drawable.x5trackinggris)
+            5 -> holder.imageItem.setBackgroundResource(if (timeLineModel.status == "DID") R.drawable.x6tracking else R.drawable.x6trackingggriss)
         }
 
         if (timeLineModel.dateCreated.isNotEmpty()) {

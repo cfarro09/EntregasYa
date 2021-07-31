@@ -6,13 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".InitialActivity">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="matrix"
-        android:alpha="0.8"
-        android:src="@drawable/backgroundqayarix"
-        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,7 +20,7 @@
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
-                app:tabTextColor="#FFF"
+                app:tabTextColor="#000"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.appbar.AppBarLayout>
 

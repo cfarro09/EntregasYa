@@ -13,33 +13,35 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <Button
                     android:padding="4dp"
                     android:id="@+id/button_status_order"
                     android:layout_width="150dp"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:drawableStart="@drawable/ic_playlist_add_check_black_24dp"
                     android:background="@drawable/sty_button_primary"
-                    android:text="Asignar estado"
+                    android:text="Asignar estado entregado"
                     android:textColor="#FFF" />
-<!--                <Button-->
-<!--                    android:padding="4dp"-->
-<!--                    android:id="@+id/button_take_photo"-->
-<!--                    android:layout_width="150dp"-->
-<!--                    android:layout_height="40dp"-->
-<!--                    android:layout_marginStart="10dp"-->
-<!--                    android:drawableStart="@android:drawable/ic_menu_camera"-->
-<!--                    android:background="@drawable/sty_button_primary"-->
-<!--                    android:text="Tomar foto"-->
-<!--                    android:textColor="#FFF" />-->
-            </LinearLayout>
+                <Button
+                    android:padding="4dp"
+                    android:id="@+id/button_take_photo"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/button_status_order"
+                    android:layout_marginStart="10dp"
+                    android:drawableStart="@android:drawable/ic_menu_camera"
+                    android:background="@drawable/sty_button_secondary"
+                    android:text="Tomar foto"
+                    android:textColor="#FFF" />
+            </RelativeLayout>
 
             <androidx.cardview.widget.CardView
+                android:layout_marginHorizontal="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -94,6 +96,7 @@
 
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
+                android:layout_marginHorizontal="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -197,6 +200,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:layout_marginHorizontal="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"

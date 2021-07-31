@@ -30,8 +30,14 @@ interface Endpoints {
     @POST("main")
     fun getTracking(@Body body: RequestBody, @Header("Authorization") authHeader: String): Call<ResponseTracking>
 
+    @POST("main")
+    fun getImages(@Body body: RequestBody, @Header("Authorization") authHeader: String): Call<ResponseListImage>
+
     @Multipart
     @POST("pedido/imagen")
     fun uploadImage(@Part imagen: MultipartBody.Part, @Header("Authorization") authHeader: String): Call<ResponseImage>
 
+    @Multipart
+    @POST("pedido/imagenchofer")
+    fun uploadImageDriver(@Part imagen: MultipartBody.Part, @Part("type") type: RequestBody, @Part("id_order") id_order: RequestBody, @Part("descripcion") descripcion: RequestBody, @Header("Authorization") authHeader: String): Call<ResponseImage>
 }

@@ -9,6 +9,12 @@ data class ResponseImage(
     var data: DataImage?
 )
 
+data class ResponseListImage(
+    var success: Boolean,
+    var msg: String?,
+    var data: List<DataImage>
+)
+
 data class ResponseCommon(
     var success: Boolean,
     var msg: String?
@@ -22,7 +28,8 @@ data class ResponseLogin(
 )
 
 data class DataImage(
-    var url: String
+    var url: String,
+    var type: String
 )
 
 data class ResponseOrders(

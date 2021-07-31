@@ -56,9 +56,11 @@ class OrdersFragment : Fragment() {
             if (requestCode == codeManage) {
                 val newStatus = SharedPrefsCache(requireContext()).get("new_status", "string") as String
                 val position = SharedPrefsCache(requireContext()).get("position", "int") as Int
+                val countImagesDelivery = SharedPrefsCache(requireContext()).get("countImagesDelivery", "int") as Int
+                val countImagesPickup = SharedPrefsCache(requireContext()).get("countImagesPickup", "int") as Int
 
                 if (newStatus.isNotEmpty() && position > -1) {
-                    adapterOrder.changeStatus(newStatus, position)
+                    adapterOrder.changeStatus(newStatus, position, countImagesDelivery, countImagesPickup)
                 }
             }
         }

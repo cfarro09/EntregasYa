@@ -13,12 +13,10 @@ class SplashScreenActivity : AppCompatActivity() {
 
         val token: String = SharedPrefsCache(this).getToken()
 
-        Handler().postDelayed({
-            if (token != "")
-                startActivity(Intent(this, HomeActivity::class.java))
-            else
-                startActivity(Intent(this, InitialActivity::class.java))
-        }, 1000)
+        if (token != "")
+            startActivity(Intent(this, HomeActivity::class.java))
+        else
+            startActivity(Intent(this, InitialActivity::class.java))
 
     }
 }
