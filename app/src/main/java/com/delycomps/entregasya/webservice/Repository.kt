@@ -2,6 +2,7 @@ package com.delycomps.entregasya.webservice
 
 import android.util.Log
 import com.delycomps.entregasya.model.*
+import com.google.gson.JsonNull
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -206,6 +207,46 @@ class Repository {
         }
     }
 
+    fun getMotives(
+        type: String,
+        token: String,
+        onResult: (isSuccess: Boolean, result: List<ResMotive>?, message: String?) -> Unit
+    )  {
+        val data = JSONObject()
+        data.put("type", JSONObject.NULL)
+
+        val oo = JSONObject()
+        oo.put("method", "SP_SEL_MOTIVES")
+        oo.put("data", data)
+
+        val body: RequestBody = RequestBody.create(
+            MediaType.parse("application/json"),
+            oo.toString()
+        )
+
+        try {
+            Connection.instance.getMotives(body, token).enqueue(object :
+                Callback<ResponseMotives> {
+                override fun onResponse(
+                    call: Call<ResponseMotives>?,
+                    response: Response<ResponseMotives>?
+                ) {
+                    if (response!!.isSuccessful) {
+                        onResult(true, response.body()!!.data, null)
+                    } else {
+                        val message = JSONObject(response.errorBody().string()).getJSONObject("error").getString("mensaje")
+                        onResult(false, null, message)
+                    }
+                }
+                override fun onFailure(call: Call<ResponseMotives>?, t: Throwable?) {
+                    onResult(false, null, "Hubo un error vuelva a intentarlo")
+                }
+            })
+        } catch (e: java.lang.Exception){
+            onResult(false, null, "Hubo un error vuelva a intentarlo")
+        }
+    }
+
 
     fun getUbigeo(
         search: String,
@@ -301,7 +342,6 @@ class Repository {
             jo.toString()
         )
         Log.d("jo_new_order", jo.toString())
-
         try {
             if (transaction) {
                 Connection.instance.execute(body, token).enqueue(object :

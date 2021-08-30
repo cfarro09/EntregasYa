@@ -55,6 +55,16 @@ data class ResponseLocation(
     var error: ResError?
 )
 
+data class ResponseMotives(
+    var success: Boolean,
+    var data: List<ResMotive>?,
+    var error: ResError?
+)
+
+data class ResMotive(
+    var sub_status: String?
+)
+
 data class ResLocation(
     var value: String?,
     var ubigeo: String?

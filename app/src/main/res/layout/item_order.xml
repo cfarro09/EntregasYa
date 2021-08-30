@@ -58,6 +58,12 @@
                     android:text="Jiron ernqiue barron 1323 Lince"
                     android:textSize="15sp" />
                 <TextView
+                    android:id="@+id/item_pickup_ubigeo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jiron ernqiue barron 1323 Lince"
+                    android:textSize="15sp" />
+                <TextView
                     android:id="@+id/item_pickup_contact_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -86,6 +92,12 @@
                     />
                 <TextView
                     android:id="@+id/item_delivery_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Primero de Mayo  778 Urrunaga"
+                    android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/item_delivery_ubigeo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Primero de Mayo  778 Urrunaga"

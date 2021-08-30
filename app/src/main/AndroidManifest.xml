@@ -29,7 +29,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.delycomps.entregasyasharing.provider"
+            android:authorities="com.delycomps.entregasyadriversharing.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

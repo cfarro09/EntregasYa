@@ -53,6 +53,8 @@ class AdapterOrder(
         holder.itemDeliveryAddress.text = order.deliveryAddress
         holder.itemDeliveryContactName.text = order.deliveryContactName
         holder.itemDeliveryPhone.text = order.deliveryPhone
+        holder.itemDeliveryUbigeo.text = order.deliveryTextUbigeo
+        holder.itemPickupUbigeo.text = order.pickupTextUbigeo
     }
 
 inner class OrderViewHolder internal constructor(itemView: View) :
@@ -67,6 +69,9 @@ inner class OrderViewHolder internal constructor(itemView: View) :
         internal var itemDeliveryAddress: TextView = itemView.findViewById(R.id.item_delivery_address)
         internal var itemDeliveryContactName: TextView = itemView.findViewById(R.id.item_delivery_contact_name)
         internal var itemDeliveryPhone: TextView = itemView.findViewById(R.id.item_delivery_phone)
+
+        internal var itemDeliveryUbigeo: TextView = itemView.findViewById(R.id.item_delivery_ubigeo)
+        internal var itemPickupUbigeo: TextView = itemView.findViewById(R.id.item_pickup_ubigeo)
 
         init {
             itemView.setOnClickListener(this)

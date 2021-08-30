@@ -18,7 +18,7 @@ class ConnectActivity : AppCompatActivity() {
         current_driver.text = "$firstName $lastName"
 
         button_connect.setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
+            startActivity(Intent(this, com.delycomps.entregasya.HomeActivity::class.java))
         }
     }
 }

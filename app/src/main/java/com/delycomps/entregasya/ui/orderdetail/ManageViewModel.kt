@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.delycomps.entregasya.model.DataImage
 import com.delycomps.entregasya.model.Order
+import com.delycomps.entregasya.model.ResMotive
 import com.delycomps.entregasya.model.Tracking
 import com.delycomps.entregasya.webservice.Repository
 import org.json.JSONObject
@@ -14,6 +15,9 @@ class ManageViewModel : ViewModel() {
 
     private val _listOrders: MutableLiveData<List<Order>> = MutableLiveData()
     val listOrders: LiveData<List<Order>> = _listOrders
+
+    private val _listMotive: MutableLiveData<List<String>> = MutableLiveData()
+    val listMotive: LiveData<List<String>> = _listMotive
 
     private val _textError: MutableLiveData<String> = MutableLiveData()
     val textError: LiveData<String> = _textError
@@ -27,6 +31,8 @@ class ManageViewModel : ViewModel() {
     private val _image: MutableLiveData<String> = MutableLiveData()
     val image: LiveData<String> = _image
 
+
+
     private val _listImages: MutableLiveData<List<DataImage>> = MutableLiveData()
     val listImages: LiveData<List<DataImage>> = _listImages
 
@@ -37,7 +43,16 @@ class ManageViewModel : ViewModel() {
             if (isSuccess) {
                 _listImages.value = result!!
             } else {
-//                _success.value = false
+                _textError.value = message
+            }
+        }
+    }
+
+    fun getListMotive(token: String) {
+        Repository().getMotives("", token) { isSuccess, result, message ->
+            if (isSuccess) {
+                _listMotive.value = result!!.map{ "" + it.sub_status }
+            } else {
                 _textError.value = message
             }
         }

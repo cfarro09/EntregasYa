@@ -28,6 +28,9 @@ interface Endpoints {
     fun getUbigeo(@Body body: RequestBody, @Header("Authorization") authHeader: String): Call<ResponseLocation>
 
     @POST("main")
+    fun getMotives(@Body body: RequestBody, @Header("Authorization") authHeader: String): Call<ResponseMotives>
+
+    @POST("main")
     fun getTracking(@Body body: RequestBody, @Header("Authorization") authHeader: String): Call<ResponseTracking>
 
     @POST("main")

@@ -55,7 +55,7 @@ class LoginFragment : Fragment() {
                         if (result.type == "CLIENT")
                             requireContext().startActivity(Intent(requireContext(), HomeActivity::class.java))
                         else
-                            requireContext().startActivity(Intent(requireContext(), ConnectActivity::class.java))
+                            requireContext().startActivity(Intent(requireContext(), com.delycomps.entregasya.ConnectActivity::class.java))
                     } else {
                         Snackbar.make(view, message as CharSequence, Snackbar.LENGTH_LONG).setBackgroundTint(resources.getColor(
                             R.color.colorPrimary

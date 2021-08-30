@@ -16,6 +16,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +31,7 @@ import com.delycomps.entregasya.cache.SharedPrefsCache
 import com.delycomps.entregasya.helpers.Helpers
 import com.delycomps.entregasya.model.Order
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.assign_status.view.*
 import kotlinx.android.synthetic.main.fragment_info_order.*
 import kotlinx.android.synthetic.main.fragment_info_order.view.*
 import java.io.File
@@ -50,14 +52,17 @@ class InfoOrderFragment : Fragment() {
     private val WRITE_EXTERNAL_STORAGE_PERMISSION = 100
     private val CODE_RESULT_CAMERA = 10001
     private lateinit var dialogLoading: AlertDialog
+    private var listReasons: List<String> = ArrayList()
+
     private var currentPhotoPath: String = ""
+    lateinit var dialog: AlertDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         manageViewModel = ViewModelProviders.of(this).get(ManageViewModel::class.java)
-        // Inflate the layout for this fragment
+        // Inflate the layout for this fragmentas
         return inflater.inflate(R.layout.fragment_info_order, container, false)
 
     }
@@ -80,6 +85,8 @@ class InfoOrderFragment : Fragment() {
         rv.setHasFixedSize(true)
         rv.layoutManager = layoutManager
 
+        manageViewModel.getListMotive(SharedPrefsCache(requireContext()).getToken())
+
         rv.adapter = if(!order.imagesProduct.isNullOrEmpty()) AdapterGallery(
             order.imagesProduct!!.split(
                 ","
@@ -88,34 +95,42 @@ class InfoOrderFragment : Fragment() {
 
         val buttonSave: Button = view.findViewById(R.id.button_status_order)
         if (order.status == "ASIGNADO") {
-            buttonSave.text = "ASIGNAR PEDIDO RECOGIDO"
+            buttonSave.text = "ASIGNAR ESTADO" //auxtmp1
+//            buttonSave.text = "ASIGNAR PEDIDO RECOGIDO"
         } else {
-            buttonSave.text = "ASIGNAR PEDIDO ENTREGADO"
+            buttonSave.text = "ASIGNAR ESTADO" //auxtmp1
+//            buttonSave.text = "ASIGNAR PEDIDO ENTREGADO"
         }
 
         verifyPermissionWriteStorage()
 
         buttonSave.setOnClickListener {
-            val newStatusTmp = if (order.status == "ASIGNADO") "RECOGIDO" else "ENTREGADO"
-
-            val dialogClickListener = DialogInterface.OnClickListener { _, which ->
-                when (which) {
-                    DialogInterface.BUTTON_POSITIVE -> {
-                        manageViewModel.assignStatus(
-                            SharedPrefsCache(requireContext()).getToken(),
-                            newStatusTmp,
-                            order.idOrder
-                        )
-                    }
-                }
-            }
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setMessage("¿Está seguro actualizar el pedido?")
-                .setPositiveButton(Html.fromHtml("<b>ACEPTAR<b>"), dialogClickListener)
-                .setNegativeButton(Html.fromHtml("<b>CANCELAR<b>"), dialogClickListener)
-            val alert = builder.create()
-            alert.show()
+            val nn = if (order.status == "ASIGNADO") "RECOGIDO" else "ENTREGADO"
+            triggerModal(nn, order.idOrder)
+//            val newStatusTmp = if (order.status == "ASIGNADO") "RECOGIDO" else "ENTREGADO"
+//
+//            val dialogClickListener = DialogInterface.OnClickListener { _, which ->
+//                when (which) {
+//                    DialogInterface.BUTTON_POSITIVE -> {
+//                        manageViewModel.assignStatus(
+//                            SharedPrefsCache(requireContext()).getToken(),
+//                            newStatusTmp,
+//                            order.idOrder
+//                        )
+//                    }
+//                }
+//            }
+//            val builder = AlertDialog.Builder(requireContext())
+//            builder.setMessage("¿Está seguro actualizar el pedido?")
+//                .setPositiveButton(Html.fromHtml("<b>ACEPTAR<b>"), dialogClickListener)
+//                .setNegativeButton(Html.fromHtml("<b>CANCELAR<b>"), dialogClickListener)
+//            val alert = builder.create()
+//            alert.show()
         }
+
+        manageViewModel.listMotive.observe(viewLifecycleOwner, {
+            listReasons = it
+        })
 
         manageViewModel.image.observe(viewLifecycleOwner, {
             val newStatus = if (order.status == "ASIGNADO") "RECOGIDO" else "ENTREGADO"
@@ -129,7 +144,6 @@ class InfoOrderFragment : Fragment() {
                 countImagesDelivery++
             else
                 countImagesDelivery++
-
         })
 
         manageViewModel.loading.observe(viewLifecycleOwner, {
@@ -155,23 +169,24 @@ class InfoOrderFragment : Fragment() {
         }
 
         manageViewModel.success.observe(viewLifecycleOwner, {
-            dialogLoading.hide()
+//            dialogLoading.hide()
+            dialog.dismiss()
             if (it) {
-                newStatus = if (order.status == "ASIGNADO") "RECOGIDO" else "ENTREGADO"
+//                newStatus = if (order.status == "ASIGNADO") "RECOGIDO" else "ENTREGADO"
                 order.status = newStatus
                 orderCurrent.status = newStatus
                 editStatus.setText(newStatus)
 
-                if (order.status == "RECOGIDO") {
-                    buttonSave.text = "ASIGNAR PEDIDO ENTREGADO"
-                }
+//                if (order.status == "RECOGIDO") {
+//                    buttonSave.text = "ASIGNAR PEDIDO ENTREGADO"
+//                }
 
                 if (newStatus == "ENTREGADO") {
                     button_take_photo.visibility = View.GONE
                     button_take_photo.setBackgroundResource(R.drawable.sty_button_disabled)
                 }
 
-                if (newStatus == "ENTREGADO" || (newStatus == "RECOGIDO" && order.countImagesPickup == 0) || (newStatus == "ENTREGADO" && order.countImagesDelivery == 0)) {
+                if (newStatus == "ENTREGADO" || newStatus == "NO ENTREGADO" || newStatus == "NO RECOGIDO" || (newStatus == "RECOGIDO" && order.countImagesPickup == 0) || (newStatus == "ENTREGADO" && order.countImagesDelivery == 0)) {
                     buttonSave.visibility = View.GONE
                     buttonSave.setBackgroundResource(R.drawable.sty_button_disabled)
                 }
@@ -202,10 +217,78 @@ class InfoOrderFragment : Fragment() {
             button_take_photo.setBackgroundResource(R.drawable.sty_button_disabled)
         }
 
-        if ((order.status == "ENTREGADO" || (order.status == "ASIGNADO" && order.countImagesPickup == 0) || (order.status == "RECOGIDO" && order.countImagesDelivery == 0))) {
+        if (order.status == "ENTREGADO" || order.status == "NO ENTREGADO" || order.status == "NO RECOGIDO" || (order.status == "ASIGNADO" && order.countImagesPickup == 0) || (order.status == "RECOGIDO" && order.countImagesDelivery == 0)) {
             buttonSave.visibility = View.GONE
             buttonSave.setBackgroundResource(R.drawable.sty_button_disabled)
         }
+    }
+
+    private fun triggerModal(nn: String, idorder: Int) {
+        val  builder: AlertDialog.Builder = AlertDialog.Builder(activity)
+        val inflater:LayoutInflater = this.layoutInflater
+
+        val dialogView = inflater.inflate(R.layout.assign_status, null)
+
+        val statuscheck = if (nn == "RECOGIDO") "RECOGIDO" else "ENTREGADO"
+        val statusnocheck = if (nn == "RECOGIDO") "NO RECOGIDO" else "NO ENTREGADO"
+
+        dialogView.affirmative_option.text = statuscheck
+        dialogView.negative_option.text = statusnocheck
+
+        val rDelivered = dialogView.radio_delivered
+        val rNotDelivered = dialogView.radio_not_delivered
+
+        val cDelivered = dialogView.container_delivered
+        val cNotDelivered = dialogView.container_not_delivered
+
+        val tvCloseModal = dialogView.close_modal
+        val tvSaveStatus = dialogView.save_status
+        val spinnerStatus = dialogView.spinner_status
+        val containerOptions = dialogView.container_without_delivered
+
+        cDelivered.setOnClickListener {
+            rDelivered.isChecked = true
+            containerOptions.visibility = View.GONE
+        }
+
+        cNotDelivered.setOnClickListener {
+            rNotDelivered.isChecked = true
+            containerOptions.visibility = View.VISIBLE
+            spinnerStatus.adapter = getAdapter(listReasons)
+        }
+
+        rDelivered.setOnClickListener {
+            containerOptions.visibility = View.GONE
+        }
+
+        rNotDelivered.setOnClickListener {
+            containerOptions.visibility = View.VISIBLE
+//            spinnerStatus.adapter = getAdapter(listReasons)
+        }
+
+        tvCloseModal.setOnClickListener { dialog.dismiss() }
+        tvSaveStatus.setOnClickListener {
+            var status = ""
+            when {
+                rDelivered.isChecked -> status = statuscheck
+                rNotDelivered.isChecked -> status = statusnocheck
+            }
+            newStatus = status
+            manageViewModel.assignStatus(
+                SharedPrefsCache(requireContext()).getToken(),
+                status,
+                idorder
+            )
+        }
+
+        builder.setView(dialogView)
+        dialog = builder.create()
+        dialog.show()
+    }
+    private fun getAdapter(list: List<String>): ArrayAdapter<String> {
+        val adapterTmp = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, list)
+        adapterTmp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return adapterTmp
     }
 
     override fun onPause() {
@@ -284,7 +367,7 @@ class InfoOrderFragment : Fragment() {
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                         requireContext(),
-                        "com.delycomps.entregasyasharing.provider",
+                        "com.delycomps.entregasyadriversharing.provider",
                         it
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
