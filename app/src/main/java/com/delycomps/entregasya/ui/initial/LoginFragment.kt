@@ -44,9 +44,11 @@ class LoginFragment : Fragment() {
                     if (isSuccess) {
                         SharedPrefsCache(requireContext()).set("first_name", result!!.firstName, "string")
                         SharedPrefsCache(requireContext()).set("last_name", result.firstName, "string")
+                        SharedPrefsCache(requireContext()).set("id_user", result.idUser, "string")
                         SharedPrefsCache(requireContext()).set("phone", result.phone, "string")
                         SharedPrefsCache(requireContext()).set("email", result.email, "string")
                         SharedPrefsCache(requireContext()).set("doct_type", result.docType, "string")
+                        SharedPrefsCache(requireContext()).set("plate_number", result.platNumber, "string")
                         SharedPrefsCache(requireContext()).set("doc_number", result.document, "string")
 
                         SharedPrefsCache(requireContext()).set("token", "Bearer ${result.token}", "string")
@@ -55,7 +57,7 @@ class LoginFragment : Fragment() {
                         if (result.type == "CLIENT")
                             requireContext().startActivity(Intent(requireContext(), HomeActivity::class.java))
                         else
-                            requireContext().startActivity(Intent(requireContext(), com.delycomps.entregasya.ConnectActivity::class.java))
+                            requireContext().startActivity(Intent(requireContext(), ConnectActivity::class.java))
                     } else {
                         Snackbar.make(view, message as CharSequence, Snackbar.LENGTH_LONG).setBackgroundTint(resources.getColor(
                             R.color.colorPrimary

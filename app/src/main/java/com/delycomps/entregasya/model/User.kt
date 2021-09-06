@@ -4,6 +4,9 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class User(
+    @SerializedName("id_user")
+    @Expose
+    var idUser: String,
     @SerializedName("token")
     @Expose
     var token: String,
@@ -22,6 +25,9 @@ data class User(
     @SerializedName("last_name")
     @Expose
     var lastName: String,
+    @SerializedName("plate_number")
+    @Expose
+    var platNumber: String,
     @SerializedName("doc_number")
     @Expose
     var document: String,

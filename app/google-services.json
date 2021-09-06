@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "772900269183",
+    "firebase_url": "https://proyect-ultima-milla-default-rtdb.firebaseio.com",
+    "project_id": "proyect-ultima-milla",
+    "storage_bucket": "proyect-ultima-milla.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772900269183:android:d79ae41b59f6445d58e34a",
+        "android_client_info": {
+          "package_name": "com.delycomps.entregasya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "772900269183-gepuo55ek18308d1j1j9nipfsd4r0p2c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD26iWpZEu8VvjpsSFv1iD047fw0II5G3M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "772900269183-gepuo55ek18308d1j1j9nipfsd4r0p2c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:772900269183:android:566cd0d8cd204be958e34a",
+        "android_client_info": {
+          "package_name": "com.delycomps.entregasyadriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "772900269183-g1mpdg93o17u307uq8qk574344udh316.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.delycomps.entregasyadriver",
+            "certificate_hash": "f5e12e9bc9892485f212cebb52ea1621da45d40d"
+          }
+        },
+        {
+          "client_id": "772900269183-gepuo55ek18308d1j1j9nipfsd4r0p2c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD26iWpZEu8VvjpsSFv1iD047fw0II5G3M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "772900269183-gepuo55ek18308d1j1j9nipfsd4r0p2c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
