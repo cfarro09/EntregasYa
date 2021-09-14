@@ -37,7 +37,9 @@ class OrdersFragment : Fragment() {
         orderViewModel = ViewModelProviders.of(this).get(OrdersViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_order, container, false)
 
-        context?.let { orderViewModel.getListOrder(SharedPrefsCache(it).getToken(), SharedPrefsCache(it).get("type", "string") as String)}
+        typeUser = SharedPrefsCache(requireContext()).get("type", "string") as String
+        val newStatus: String = if (typeUser === "CLIENT") "" else "ACTUAL"
+        context?.let { orderViewModel.getListOrder(SharedPrefsCache(it).getToken(), typeUser, newStatus)}
 
         return root
     }
@@ -49,7 +51,7 @@ class OrdersFragment : Fragment() {
                 if (status) {
                     val text = if (typeUser == "CLIENT") "El pedido fue asignado correctamente." else "Nuevo pedido registrado correctamente."
                     Snackbar.make(rv, text, Snackbar.LENGTH_LONG).show()
-                    context?.let { orderViewModel.getListOrder(SharedPrefsCache(it).getToken(), typeUser)}
+                    context?.let { orderViewModel.getListOrder(SharedPrefsCache(it).getToken(), typeUser, if (typeUser === "CLIENT") "ACTUAL" else "")}
                 }
             }
         } else {
@@ -80,8 +82,10 @@ class OrdersFragment : Fragment() {
 
         val swiper: SwipeRefreshLayout = view.findViewById(R.id.swiperefresh)
 
+        val newStatus: String = if (typeUser === "CLIENT") "ACTUAL" else ""
+
         swiper.setOnRefreshListener {
-            context?.let { orderViewModel.getListOrder(SharedPrefsCache(it).getToken(), SharedPrefsCache(it).get("type", "string") as String)}
+            context?.let { orderViewModel.getListOrder(SharedPrefsCache(it).getToken(), typeUser, newStatus)}
             swiper.isRefreshing = false
         }
 

@@ -17,9 +17,9 @@ class OrdersViewModel : ViewModel() {
     private val _loading: MutableLiveData<Boolean> = MutableLiveData()
     val loading: LiveData<Boolean> = _loading
 
-    fun getListOrder(token: String, type: String) {
+    fun getListOrder(token: String, type: String, status: String = "") {
         _loading.value = true
-        Repository().getOrder(type, token) { isSuccess, result, message ->
+        Repository().getOrder(type, token, false, status) { isSuccess, result, message ->
             _loading.value = false
             if (isSuccess) {
                 if (result != null) {

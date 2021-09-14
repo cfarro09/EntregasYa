@@ -116,6 +116,7 @@ class Repository {
         type: String,
         token: String,
         all: Boolean = false,
+        status: String = "",
         onResult: (isSuccess: Boolean, result: List<Order>?, message: String?) -> Unit
     )  {
 
@@ -126,13 +127,13 @@ class Repository {
             oo.put("data", JSONObject())
         } else {
             val data = JSONObject()
-            data.put("status", JSONObject.NULL)
+            data.put("status", if (status == "")  JSONObject.NULL else status)
             data.put("type", type)
 
             oo.put("method", "SP_SEL_CLIENT_ORDER")
             oo.put("data", data)
         }
-
+        Log.d("jo_new_order", oo.toString())
         val body: RequestBody = RequestBody.create(
             MediaType.parse("application/json"),
             oo.toString()
@@ -147,6 +148,7 @@ class Repository {
                 ) {
                     if (response!!.isSuccessful) {
                         if (response.body()!!.success) {
+                            Log.d("jo_new_order", "rows: " + response.body()!!.data.count())
                             onResult(true, response.body()!!.data, null)
                         } else {
                             val msg: String =

@@ -4,8 +4,11 @@
     <item
         android:id="@+id/navigation_order"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/info" />
-
+        android:title="Entregas" />
+    <item
+        android:id="@+id/navigation_order_history"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Historial" />
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_person_black_24dp"
