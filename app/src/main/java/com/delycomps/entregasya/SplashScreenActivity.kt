@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import com.delycomps.entregasya.cache.SharedPrefsCache
+import com.google.firebase.FirebaseApp
 
 class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,7 +15,7 @@ class SplashScreenActivity : AppCompatActivity() {
         val token: String = SharedPrefsCache(this).getToken()
 
         if (token != "")
-            startActivity(Intent(this, HomeActivity::class.java))
+            startActivity(Intent(this, ConnectActivity::class.java))
         else
             startActivity(Intent(this, InitialActivity::class.java))
 

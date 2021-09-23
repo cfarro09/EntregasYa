@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/fd_ca/StudioProjects/EntregasYa/app/src/main/res/layout/activity_connect.xml" value="0.2" />
+        <entry key="..\:/Users/fd_ca/StudioProjects/EntregasYa/app/src/main/res/layout/activity_detail_order.xml" value="0.12360688956433637" />
         <entry key="..\:/Users/fd_ca/StudioProjects/EntregasYa/app/src/main/res/layout/activity_home.xml" value="0.13722826086956522" />
+        <entry key="..\:/Users/fd_ca/StudioProjects/EntregasYa/app/src/main/res/layout/activity_initial.xml" value="0.13949275362318841" />
         <entry key="..\:/Users/fd_ca/StudioProjects/EntregasYa/app/src/main/res/layout/fragment_dashboard.xml" value="0.23324275362318841" />
+        <entry key="..\:/Users/fd_ca/StudioProjects/EntregasYa/app/src/main/res/layout/fragment_login.xml" value="0.125" />
         <entry key="..\:/Users/fd_ca/StudioProjects/EntregasYa/app/src/main/res/layout/fragment_order.xml" value="0.13722826086956522" />
         <entry key="..\:/Users/fd_ca/StudioProjects/EntregasYa/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
       </map>

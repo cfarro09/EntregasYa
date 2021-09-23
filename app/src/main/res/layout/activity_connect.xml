@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_vertical"
-
+    android:id="@+id/activity_connect"
     tools:context=".ConnectActivity">
 
     <LinearLayout
@@ -57,14 +57,22 @@
             android:text="NO DISPONIBLE" />
     </LinearLayout>
     <Button
+        android:id="@+id/request_location_updates_button"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/sty_button_secondary"
-        android:paddingHorizontal="15dp"
-        android:textColor="#FFF"
-        android:id="@+id/button_connect"
         android:layout_gravity="center_horizontal"
-        android:layout_width="150dp"
-        android:text="CONCETARSE"
-        android:layout_height="wrap_content"/>
+        android:text="Conectarse" />
+
+    <Button
+        android:id="@+id/remove_location_updates_button"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:text="Dejar de compartir" />
+
 
 </LinearLayout>

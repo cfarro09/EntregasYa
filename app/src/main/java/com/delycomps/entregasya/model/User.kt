@@ -4,6 +4,12 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class User(
+    @SerializedName("id_user")
+    @Expose
+    var idUser: Int,
+    @SerializedName("plate_number")
+    @Expose
+    var platNumber: String,
     @SerializedName("token")
     @Expose
     var token: String,
