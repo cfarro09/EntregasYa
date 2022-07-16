@@ -11,10 +11,11 @@
         <entry key="..\:/Users/fd_ca/StudioProjects/EntregasYa/app/src/main/res/layout/fragment_login.xml" value="0.125" />
         <entry key="..\:/Users/fd_ca/StudioProjects/EntregasYa/app/src/main/res/layout/fragment_order.xml" value="0.13722826086956522" />
         <entry key="..\:/Users/fd_ca/StudioProjects/EntregasYa/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/user/StudioProjects/EntregasYa/app/src/main/res/layout/activity_connect.xml" value="0.18432971014492755" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
