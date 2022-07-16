@@ -200,7 +200,7 @@ class LocationUpdatesService : Service() {
     private fun getnotification(): Notification {
         Log.i(TAG, "DISPATCH NOTIFICATION")
         val intent = Intent(this, LocationUpdatesService::class.java)
-        val text: CharSequence = getLocationText(mLocation)
+        val text: CharSequence = getLocationText(mLocation) ?: ""
 
         // Extra to help us figure out if we arrived in onStartCommand via the notification or not.
         intent.putExtra(EXTRA_STARTED_FROM_NOTIFICATION, true)
@@ -228,7 +228,7 @@ class LocationUpdatesService : Service() {
                 servicePendingIntent
             )
             .setContentText(text)
-            .setContentTitle(getLocationTitle())
+            .setContentTitle(getLocationTitle(this))
             .setOngoing(true)
             .setPriority(Notification.PRIORITY_LOW)
             .setSmallIcon(R.drawable.logoya)

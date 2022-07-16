@@ -74,3 +74,9 @@ data class BodyGet(
     var method: String,
     var data: JSONObject
 )
+
+data class LocationDTO(
+    var latitude: Double,
+    var longitude: Double,
+    var plateNumber: String
+)

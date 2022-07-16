@@ -239,7 +239,7 @@ class HomeActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, s: String) {
         // Update the buttons state depending on whether location updates are being requested.
-        if (s == Utils.KEY_REQUESTING_LOCATION_UPDATES) {
+        if (s == "requesting_location_updates") {
 
         }
     }
